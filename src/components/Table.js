@@ -1,6 +1,6 @@
-import React, { useState } from 'react'
+import React from 'react'
 
-function Table() {
+function Table({sortBy}) {
   const people = [
     {
       name: "Rhianna Johnson",
@@ -35,25 +35,20 @@ function Table() {
       birth: "10/31/1999",
     },
   ]
-  const [order, setOrder] = useState("ASC");
-  const sorting = (col) => {
-    if (order === "ASC") {
-      const sorted = [...people].sort((a,b) =>
-        a[col].toLowerCase() > b[col].toLowerCase() ? 1 : -1
-      )
-      (sorted)
-      setOrder("ASC")
-    }
-    if (order === "DSC") {
-      const sorted = [...people].sort((a,b) =>
-        a[col].toLowerCase() < b[col].toLowerCase() ? 1 : -1
-      )
-      (sorted)
-      setOrder("DSC")
-    }
+
+  const compareDates = () => {
+    return people.sort((a,b) => {
+      return new Date(a.birth) - new Date(b.birth);
+    })
   }
 
-
+  const compareNames = () => {
+    return people.sort((a,b) => {
+      const person1 = a.name.toLowerCase();
+      const person2 = b.name.toLowerCase();
+      return person1 < person2 ? -1 : person1 > person2 ? 1 : 0;
+    })
+  }
 
   return (
     <div className="table-div">
@@ -61,18 +56,36 @@ function Table() {
         <table data-testid="table">
           <thead>
             <tr>
-              <th onClick={()=>sorting("name")} className="course-name">Person Name</th>
-              <th onClick={()=>sorting("birth")} className="duration">Date of Birth</th>
+              <th className="course-name">Person Name</th>
+              <th className="duration">Date of Birth</th>
             </tr>
           </thead>
           <tbody>
-            {
+            {!sortBy &&
               people.map((item) =>
                 <tr>
                   <td>{item.name}</td>
                   <td>{item.birth}</td>
                 </tr>
               )}
+            {sortBy === 'name' &&
+              compareNames().map((item) => {
+                return (
+                  <tr>
+                    <td>{item.name}</td>
+                    <td>{item.birth}</td>
+                  </tr>
+                )
+              })}
+              {sortBy === 'birth' &&
+              compareDates().map((item) => {
+                return (
+                  <tr>
+                    <td>{item.name}</td>
+                    <td>{item.birth}</td>
+                  </tr>
+                )
+              })}
           </tbody>
         </table>
       </div>
