@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 
 function Table() {
   const people = [
@@ -35,6 +35,25 @@ function Table() {
       birth: "10/31/1999",
     },
   ]
+  const [order, setOrder] = useState("ASC");
+  const sorting = (col) => {
+    if (order === "ASC") {
+      const sorted = [...people].sort((a,b) =>
+        a[col].toLowerCase() > b[col].toLowerCase() ? 1 : -1
+      )
+      (sorted)
+      setOrder("ASC")
+    }
+    if (order === "DSC") {
+      const sorted = [...people].sort((a,b) =>
+        a[col].toLowerCase() < b[col].toLowerCase() ? 1 : -1
+      )
+      (sorted)
+      setOrder("DSC")
+    }
+  }
+
+
 
   return (
     <div className="table-div">
@@ -42,15 +61,18 @@ function Table() {
         <table data-testid="table">
           <thead>
             <tr>
-              <th className="course-name">Person Name</th>
-              <th className="duration">Date of Birth</th>
+              <th onClick={()=>sorting("name")} className="course-name">Person Name</th>
+              <th onClick={()=>sorting("birth")} className="duration">Date of Birth</th>
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td />
-              <td />
-            </tr>
+            {
+              people.map((item) =>
+                <tr>
+                  <td>{item.name}</td>
+                  <td>{item.birth}</td>
+                </tr>
+              )}
           </tbody>
         </table>
       </div>
