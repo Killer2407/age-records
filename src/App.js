@@ -10,7 +10,6 @@ function App() {
 
   const doSortBy = (parameter) => {
     if (parameter === 'name') {
-      console.log('Hello');
       setSortBy('name')
     } else {
       setSortBy('birth')
